@@ -1,19 +1,16 @@
 <template>
   <div>
     <transition-group name="list" tag="ul">
-      <li
-        v-for="(item, index) in this.$store.state.todos"
-        v-bind:key="item.item"
-      >
+      <li v-for="(item, index) in this.storedTodoItems" v-bind:key="item.item">
         <i
           class="fas fa-check checkBtn"
-          v-on:click="completing(item, index)"
+          v-on:click="completing({ item, index })"
           v-bind:class="{ checkBtnCompleted: item.completed }"
         ></i>
         <span v-bind:class="{ textCompleted: item.completed }">{{
           item.item
         }}</span>
-        <span class="removeBtn" v-on:click="removeItem(item, index)">
+        <span class="removeBtn" v-on:click="removeItem({ item, index })">
           <i class="fas fa-trash-alt"></i
         ></span>
       </li>
@@ -22,17 +19,29 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from "vuex";
 export default {
   methods: {
-    removeItem(item, index) {
+    ...mapMutations({
+      removeItem: "removeTodo", //인자는 알아서 넘겨준다
+      completing: "completeTodo",
+    }),
+    /*removeItem(item, index) {
       const obj = { item, index };
       this.$store.commit("removeTodo", obj);
-    },
-    completing(item, index) {
+    },*/
+
+    /*completing(item, index) {
       const obj = { item, index };
       console.log(index);
       this.$store.commit("completeTodo", obj);
-    },
+    },*/
+  },
+  computed: {
+    /*todoItems() {
+      return this.$store.getters.storedTodoItems;
+    }, => 일반 getters 사용  */
+    ...mapGetters(["storedTodoItems"]),
   },
 };
 </script>

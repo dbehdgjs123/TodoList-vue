@@ -21,6 +21,11 @@ export const store = new Vuex.Store({
   state: {
     todos: storage.fetch(),
   },
+  getters: {
+    storedTodoItems(state) {
+      return state.todos;
+    },
+  },
   mutations: {
     addTodo(state, item) {
       const obj = { completed: false, item: item };
